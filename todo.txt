@@ -1,0 +1,5 @@
+1 - Customers
+    [X] - Listagem
+    [ ] - Cadastro
+2 - Dashboard
+    [ ] - Metricas
