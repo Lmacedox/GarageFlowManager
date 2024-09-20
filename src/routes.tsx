@@ -4,8 +4,8 @@ import { SignIn } from './pages/Auth/auth';
 import { NotFound } from './pages/NotFound';
 import { AppLayout } from './pages/_layouts/app';
 import { Dashboard } from './pages/dashboard/dashboard';
-import { Customers } from './pages/customers/customers';
-import { NewCustomer } from './pages/customers/new-customer';
+import { Customers } from './pages/customers/table/customers-table';
+import { NewCustomer } from './pages/customers/new-customer/new-customer';
 
 export const router = createBrowserRouter([
   {
