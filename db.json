@@ -1,0 +1,34 @@
+{
+  "customers": [
+    {
+      "id": 1,
+      "name": "Yuri Alberto",
+      "vehicle": "Celta 2010",
+      "birthDate": "01/05/1995",
+      "rg": "401.555.630.55",
+      "document": "584.200.125-63",
+      "email": "yurialberto@example.com",
+      "phone": "(11) 96065-0662",
+      "zipCode": "025453-987",
+      "address": "Rua Alberto Maximo,nª10, Embu-das-Artes",
+      "foundmMeAs": "Instagram",
+      "indicationPersonName": "Roger Guedes",
+      "registerData": "01/05/2024"
+    },
+    {
+      "id": 2,
+      "name": "Roger Guedes",
+      "vehicle": "Pálio 2002",
+      "birthDate": "01/05/1995",
+      "rg": "491.908.524.55",
+      "document": "584.200.125-63",
+      "email": "guedinhorogin@example.com",
+      "phone": "(11) 96505-1231",
+      "zipCode": "025453-987",
+      "address": "Rua Alberto Maximo,nª10, Embu-das-Artes",
+      "foundmMeAs": "Instagram",
+      "indicationPersonName": "",
+      "registerData": "01/05/2024"
+    }
+  ]
+}

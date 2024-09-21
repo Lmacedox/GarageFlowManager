@@ -12,12 +12,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useForm } from 'react-hook-form';
+
+import { useNewCustomers } from './use-new-customers';
+import { InputErrorMessage } from '@/components/input-error-message';
 
 export function NewCustomer() {
-  const { register, handleSubmit } = useForm();
-
-  const onSubmit = handleSubmit((data) => console.log('@Data', data));
+  const { errors, register, onSubmit } = useNewCustomers();
 
   return (
     <div>
@@ -31,12 +31,14 @@ export function NewCustomer() {
           <div className="flex flex-row  gap-4">
             <div className="space-y-2">
               <Label htmlFor="name">Contato</Label>
-              <Input placeholder="Nome do cliente" {...register('Nome')} />
+              <Input placeholder="Nome do cliente" {...register('name')} />
+              <InputErrorMessage inputName={'name'} errors={errors} />
             </div>
 
             <div className="max-w-32 space-y-2">
               <Label htmlFor="document">CPF</Label>
               <Input placeholder="xxx.xxx.xxx-xx" {...register('document')} />
+              <InputErrorMessage inputName={'document'} errors={errors} />
             </div>
 
             <div className="space-y-2">
@@ -45,6 +47,7 @@ export function NewCustomer() {
                 placeholder="(xx) xxxxx-xxxx"
                 {...register('phoneNumber')}
               />
+              <InputErrorMessage inputName={'phoneNumber'} errors={errors} />
             </div>
 
             <div className="space-y-2">
@@ -53,6 +56,7 @@ export function NewCustomer() {
                 placeholder="Veículo do cliente"
                 {...register('vehicle')}
               />
+              <InputErrorMessage inputName={'vehicle'} errors={errors} />
             </div>
 
             <div className="space-y-2">
@@ -67,7 +71,7 @@ export function NewCustomer() {
         </form>
       </div>
 
-      <div className="my-5 rounded border p-4">
+      {/* <div className="my-5 rounded border p-4">
         <Typography.H3>Histórico de Manutenções</Typography.H3>
         <Separator orientation="horizontal" className="my-3" />
         <div>
@@ -99,7 +103,7 @@ export function NewCustomer() {
             </TableFooter>
           </Table>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

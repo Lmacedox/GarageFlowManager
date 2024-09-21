@@ -11,9 +11,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { ChevronRight, Pencil, SquarePen } from 'lucide-react';
+
+import { SquarePen } from 'lucide-react';
+import { useCustomersTable } from './use-customers-table';
 
 export function Customers() {
+  const { isLoadingCustomersList, customersList } = useCustomersTable();
+
+  console.log('@Loading', isLoadingCustomersList);
+  console.log('@customersList', customersList);
+
   return (
     <div>
       <div className="mb-4 flex w-full justify-between">
@@ -38,7 +45,24 @@ export function Customers() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
+            {customersList?.data.map((e: any) => {
+              return (
+                <TableRow>
+                  <TableCell className="font-medium">{e.name}</TableCell>
+                  <TableCell>{e.vehicle}</TableCell>
+                  <TableCell>{e.phone}</TableCell>
+                  <TableCell>4</TableCell>
+                  <TableCell>{e.registerData}</TableCell>
+                  <TableCell className="text-right">2 anos e 4 Meses</TableCell>
+                  <TableCell className="text-center">
+                    <Button variant="outline" size="icon">
+                      <SquarePen className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+            {/* <TableRow>
               <TableCell className="font-medium">Cristiano Ronaldo</TableCell>
               <TableCell>Celta</TableCell>
               <TableCell>(00) 00000-0000</TableCell>
@@ -63,14 +87,14 @@ export function Customers() {
                   <SquarePen className="h-4 w-4" />
                 </Button>
               </TableCell>
-            </TableRow>
+            </TableRow> */}
           </TableBody>
           <TableFooter>
             <TableRow>
               <TableCell colSpan={6}>Total</TableCell>
               <TableCell className="text-right">2</TableCell>
             </TableRow>
-          </TableFooter>{' '}
+          </TableFooter>
           <TableCaption className="py-2">
             Sua listagem de clientes!
           </TableCaption>
