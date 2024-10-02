@@ -13,7 +13,7 @@ export default {
         sans: ['Inter'],
       },
       animation: {
-        'spin-slow': 'spin 3s linear infinite',
+        'spin-slow': 'spin 6s linear infinite',
       },
       colors: {
         background: 'hsl(var(--background))',

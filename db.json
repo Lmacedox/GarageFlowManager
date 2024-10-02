@@ -1,7 +1,14 @@
 {
+  "users": [
+    {
+      "userName": "teste",
+      "password": "1",
+      "id": "4b62"
+    }
+  ],
   "customers": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Yuri Alberto",
       "vehicle": "Celta 2010",
       "birthDate": "01/05/1995",
@@ -16,7 +23,7 @@
       "registerData": "01/05/2024"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Roger Guedes",
       "vehicle": "Pálio 2002",
       "birthDate": "01/05/1995",
