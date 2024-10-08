@@ -14,13 +14,15 @@ const InputErrorMessage = React.forwardRef<
   const errorMessage = errors[inputName]?.message;
 
   return (
-    <span
-      className={cn('text-xs text-red-400', className)}
-      ref={ref}
-      {...props}
-    >
-      {errorMessage}
-    </span>
+    errorMessage && (
+      <span
+        className={cn('text-xs text-red-400', className)}
+        ref={ref}
+        {...props}
+      >
+        {errorMessage}
+      </span>
+    )
   );
 });
 InputErrorMessage.displayName = 'Input';

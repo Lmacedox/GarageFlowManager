@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 export const signInSchema = z.object({
   userName: z.string().min(1, { message: 'Campo obrigatório' }),
@@ -17,6 +18,9 @@ type signInForm = z.infer<typeof signInSchema>;
 export const useSignIn = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [sucess, setSucess] = useState<'erro' | 'sucesso' | undefined>(
+    undefined,
+  );
 
   const {
     register,
@@ -47,9 +51,12 @@ export const useSignIn = () => {
   const { mutateAsync: registerRestaurantFn, isPending } = useMutation({
     mutationFn: loadCustomersList,
     onSuccess: () => {
+      console.log('@Teda');
+      setSucess('sucesso');
       navigate('/dashboard');
     },
     onError: () => {
+      setSucess('erro');
       toast({
         title: 'Parece que temos algo errado.....',
         description: 'Usuário inválido!',
@@ -67,5 +74,6 @@ export const useSignIn = () => {
     register,
     onSubmit,
     isPending,
+    sucess,
   };
 };
