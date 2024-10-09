@@ -1,5 +1,9 @@
 {
   "files": [],
+  "include": [
+    "src",
+    "cypress"
+  ],
   "references": [
     {
       "path": "./tsconfig.app.json"
@@ -17,7 +21,9 @@
     },
     "types": [
       "vitest/globals",
-      "@testing-library/jest-dom"
+      "@testing-library/jest-dom",
+      "cypress",
+      "node"
     ],
-  }
+  },
 }
