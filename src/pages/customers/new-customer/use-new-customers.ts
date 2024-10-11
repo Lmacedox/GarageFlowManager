@@ -13,7 +13,7 @@ export const newCustomerSchema = z.object({
   vehicle: z.string().min(1, { message: 'Campo obrigatório' }),
   birthDate: z.string().min(1, { message: 'Campo obrigatório' }),
   foundThrough: z.string().min(1, { message: 'Campo obrigatório' }),
-  personWhoIndicated: z.string(),
+  personWhoIndicated: z.string().optional(),
   registerAt: z.string().optional(),
 });
 
@@ -37,7 +37,10 @@ export const useNewCustomers = () => {
   });
 
   const newCustomer = async ({ ...customer }: newCustomerForm) => {
+    console.log('@Call');
     const { data, status } = await api.post('/customers', customer);
+
+    console.log('@Data', data);
 
     if (data.length === 0) {
       throw { status: 401 };
@@ -46,26 +49,25 @@ export const useNewCustomers = () => {
     return { data, status };
   };
 
-  const { mutateAsync: registerRestaurantFn } = useMutation({
+  const { mutateAsync: registerNewCustomer, isPending } = useMutation({
     mutationFn: newCustomer,
     onSuccess: () => {
       toast({
-        title: 'Parece que temos algo errado.....',
-        description: 'Usuário inválido!',
-        variant: 'destructive',
+        title: 'Novo cliente adicionado ',
+        variant: 'success',
       });
     },
     onError: () => {
       toast({
         title: 'Parece que temos algo errado.....',
-        description: 'Usuário inválido!',
+        description: 'Não foi possível adicionar o cliente, tente novamente.',
         variant: 'destructive',
       });
     },
   });
 
   const onSubmit = handleSubmit(({ ...customer }) =>
-    registerRestaurantFn({ ...customer }),
+    registerNewCustomer({ ...customer }),
   );
 
   return {
@@ -74,5 +76,6 @@ export const useNewCustomers = () => {
     onSubmit,
     watch,
     control,
+    isPending,
   };
 };

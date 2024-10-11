@@ -19,7 +19,7 @@ export function SignIn() {
       <form onSubmit={onSubmit} className="mt-11 flex flex-col gap-2">
         <div className="space-y-5 text-left">
           <Input
-            placeholder="Nome do cliente"
+            placeholder="Usuário"
             {...register('userName')}
             data-cy="userName-input"
           />
@@ -28,7 +28,7 @@ export function SignIn() {
 
         <div className="space-y-5 text-left">
           <Input
-            placeholder="Senha"
+            placeholder="*********"
             type="password"
             {...register('password')}
             data-cy="password-input"

@@ -24,9 +24,13 @@ import {
 import { useNewCustomers } from './use-new-customers';
 import { InputErrorMessage } from '@/components/input-error-message';
 import { Controller } from 'react-hook-form';
+import { LoaderCircle } from 'lucide-react';
 
 export function NewCustomer() {
-  const { errors, register, onSubmit, watch, control } = useNewCustomers();
+  const { errors, register, onSubmit, watch, control, isPending } =
+    useNewCustomers();
+
+  console.log('@errors', errors);
 
   const foundThrough = watch('foundThrough');
 
@@ -64,8 +68,8 @@ export function NewCustomer() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="birthDate">Contato</Label>
-              <Input placeholder="(xx) xxxxx-xxxx" {...register('birthDate')} />
+              <Label htmlFor="birthDate">Aniversário</Label>
+              <Input placeholder="xx/xx/xxxx" {...register('birthDate')} />
               <InputErrorMessage inputName={'birthDate'} errors={errors} />
             </div>
 
@@ -96,6 +100,8 @@ export function NewCustomer() {
                   );
                 }}
               />
+
+              <InputErrorMessage inputName={'foundThrough'} errors={errors} />
             </div>
 
             {foundThrough === 'Recomendação' && (
@@ -128,7 +134,9 @@ export function NewCustomer() {
           </div>
 
           <div className="mt-5 text-end">
-            <Button variant={'sucess'}>Salvar</Button>
+            <Button variant={'sucess'}>
+              {isPending ? <LoaderCircle className="animate-spin" /> : 'Salvar'}
+            </Button>
           </div>
         </form>
       </div>
