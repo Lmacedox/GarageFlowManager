@@ -50,7 +50,7 @@ export function Customers() {
                 <TableRow>
                   <TableCell className="font-medium">{e.name}</TableCell>
                   <TableCell>{e.vehicle}</TableCell>
-                  <TableCell>{e.phone}</TableCell>
+                  <TableCell>{e.phoneNumber}</TableCell>
                   <TableCell>4</TableCell>
                   <TableCell>{e.registerData}</TableCell>
                   <TableCell className="text-right">2 anos e 4 Meses</TableCell>

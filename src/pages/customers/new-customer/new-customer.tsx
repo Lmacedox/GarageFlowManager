@@ -13,11 +13,24 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
 import { useNewCustomers } from './use-new-customers';
 import { InputErrorMessage } from '@/components/input-error-message';
+import { Controller } from 'react-hook-form';
 
 export function NewCustomer() {
-  const { errors, register, onSubmit } = useNewCustomers();
+  const { errors, register, onSubmit, watch, control } = useNewCustomers();
+
+  const foundThrough = watch('foundThrough');
+
+  console.log('@foundThrough', foundThrough);
 
   return (
     <div>
@@ -28,14 +41,14 @@ export function NewCustomer() {
         <Typography.H3>Dados</Typography.H3>
         <Separator orientation="horizontal" className="my-3" />
         <form onSubmit={onSubmit}>
-          <div className="flex flex-row  gap-4">
+          <div className="flex flex-row flex-wrap gap-4">
             <div className="space-y-2">
               <Label htmlFor="name">Contato</Label>
               <Input placeholder="Nome do cliente" {...register('name')} />
               <InputErrorMessage inputName={'name'} errors={errors} />
             </div>
 
-            <div className="max-w-32 space-y-2">
+            <div className="max-w-[150px] space-y-2">
               <Label htmlFor="document">CPF</Label>
               <Input placeholder="xxx.xxx.xxx-xx" {...register('document')} />
               <InputErrorMessage inputName={'document'} errors={errors} />
@@ -49,6 +62,55 @@ export function NewCustomer() {
               />
               <InputErrorMessage inputName={'phoneNumber'} errors={errors} />
             </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="birthDate">Contato</Label>
+              <Input placeholder="(xx) xxxxx-xxxx" {...register('birthDate')} />
+              <InputErrorMessage inputName={'birthDate'} errors={errors} />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="foundThrough">Como nos encontrou</Label>
+
+              <Controller
+                name="foundThrough"
+                control={control}
+                render={({ field: { name, onChange, value } }) => {
+                  return (
+                    <Select name={name} onValueChange={onChange} value={value}>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Selecione" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectContent>
+                          <SelectItem value={'Recomendação'}>
+                            Recomendação
+                          </SelectItem>
+
+                          <SelectItem value={'Instagram'}>Instagram</SelectItem>
+
+                          <SelectItem value={'WhatsApp'}>WhatsApp</SelectItem>
+                        </SelectContent>
+                      </SelectContent>
+                    </Select>
+                  );
+                }}
+              />
+            </div>
+
+            {foundThrough === 'Recomendação' && (
+              <div className="space-y-2">
+                <Label htmlFor="personWhoIndicated">Indicado por</Label>
+                <Input
+                  placeholder="Nome do indicador"
+                  {...register('personWhoIndicated')}
+                />
+                <InputErrorMessage
+                  inputName={'personWhoIndicated'}
+                  errors={errors}
+                />
+              </div>
+            )}
 
             <div className="space-y-2">
               <Label htmlFor="vehicle">Veículo</Label>

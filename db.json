@@ -10,16 +10,16 @@
     {
       "id": "1",
       "name": "Yuri Alberto",
+      "document": "584.200.125-63",
+      "phoneNumber": "(11) 96065-0662",
       "vehicle": "Celta 2010",
       "birthDate": "01/05/1995",
       "rg": "401.555.630.55",
-      "document": "584.200.125-63",
       "email": "yurialberto@example.com",
-      "phone": "(11) 96065-0662",
       "zipCode": "025453-987",
       "address": "Rua Alberto Maximo,nª10, Embu-das-Artes",
-      "foundmMeAs": "Instagram",
-      "indicationPersonName": "Roger Guedes",
+      "foundThrough": "Instagram",
+      "personWhoIndicated": "Roger Guedes",
       "registerData": "01/05/2024"
     },
     {
@@ -30,12 +30,22 @@
       "rg": "491.908.524.55",
       "document": "584.200.125-63",
       "email": "guedinhorogin@example.com",
-      "phone": "(11) 96505-1231",
+      "phoneNumber": "(11) 96505-1231",
       "zipCode": "025453-987",
       "address": "Rua Alberto Maximo,nª10, Embu-das-Artes",
-      "foundmMeAs": "Instagram",
-      "indicationPersonName": "",
+      "foundThrough": "Instagram",
+      "personWhoIndicated": "",
       "registerData": "01/05/2024"
+    },
+    {
+      "id": "c12b",
+      "name": "Fulano Teste",
+      "document": "300.300.300-30",
+      "phoneNumber": "(11) 96065-0552",
+      "vehicle": "Golf GTI",
+      "birthDate": "(11) 96065-0552",
+      "foundThrough": "Recomendação",
+      "personWhoIndicated": "Pablo Andrade"
     }
   ]
 }
