@@ -1,17 +1,9 @@
 import { Typography } from '@/components/typography';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+
 import { Separator } from '@/components/ui/separator';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { useHookFormMask } from 'use-mask-input';
 
 import {
   Select,
@@ -21,20 +13,30 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+
 import { useNewCustomers } from './use-new-customers';
-import { InputErrorMessage } from '@/components/input-error-message';
-import { Controller } from 'react-hook-form';
+
 import { LoaderCircle } from 'lucide-react';
 
+import { Masks } from '@/resources/masks';
+import { SelectObject } from '@/resources/selectObject';
+
 export function NewCustomer() {
-  const { errors, register, onSubmit, watch, control, isPending } =
-    useNewCustomers();
+  const { form, onSubmit, isPending } = useNewCustomers();
 
-  console.log('@errors', errors);
+  const registerWithMask = useHookFormMask(form.register);
 
-  const foundThrough = watch('foundThrough');
+  const foundThrough = form.watch('foundThrough');
 
-  console.log('@foundThrough', foundThrough);
+  console.log(form.formState.errors);
 
   return (
     <div>
@@ -44,136 +46,176 @@ export function NewCustomer() {
       <div className="rounded border p-4">
         <Typography.H3>Dados</Typography.H3>
         <Separator orientation="horizontal" className="my-3" />
-        <form onSubmit={onSubmit}>
-          <div className="flex flex-row flex-wrap gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Contato</Label>
-              <Input placeholder="Nome do cliente" {...register('name')} />
-              <InputErrorMessage inputName={'name'} errors={errors} />
-            </div>
+        <Form {...form}>
+          <form onSubmit={onSubmit}>
+            <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
+              <FormField
+                control={form.control}
+                name="name"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Nome do cliente</FormLabel>
 
-            <div className="max-w-[150px] space-y-2">
-              <Label htmlFor="document">CPF</Label>
-              <Input placeholder="xxx.xxx.xxx-xx" {...register('document')} />
-              <InputErrorMessage inputName={'document'} errors={errors} />
-            </div>
+                    <FormControl>
+                      <Input placeholder="Nome" {...form.register('name')} />
+                    </FormControl>
 
-            <div className="space-y-2">
-              <Label htmlFor="phoneNumber">Contato</Label>
-              <Input
-                placeholder="(xx) xxxxx-xxxx"
-                {...register('phoneNumber')}
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              <InputErrorMessage inputName={'phoneNumber'} errors={errors} />
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="birthDate">Aniversário</Label>
-              <Input placeholder="xx/xx/xxxx" {...register('birthDate')} />
-              <InputErrorMessage inputName={'birthDate'} errors={errors} />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="foundThrough">Como nos encontrou</Label>
-
-              <Controller
+              <FormField
+                control={form.control}
                 name="foundThrough"
-                control={control}
-                render={({ field: { name, onChange, value } }) => {
-                  return (
-                    <Select name={name} onValueChange={onChange} value={value}>
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Selecione" />
-                      </SelectTrigger>
-                      <SelectContent>
+                render={({ field: { onChange, value } }) => (
+                  <FormItem>
+                    <FormLabel>Como nos encontrou</FormLabel>
+
+                    <FormControl>
+                      <Select onValueChange={onChange} value={value}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder={'Selecione...'} />
+                        </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value={'Recomendação'}>
-                            Recomendação
-                          </SelectItem>
-
-                          <SelectItem value={'Instagram'}>Instagram</SelectItem>
-
-                          <SelectItem value={'WhatsApp'}>WhatsApp</SelectItem>
+                          {Object.values(SelectObject.foundThroughEnum).map(
+                            (selectOptions) => (
+                              <SelectItem
+                                value={selectOptions.value.toString()}
+                                key={selectOptions.value}
+                              >
+                                {selectOptions.description}
+                              </SelectItem>
+                            ),
+                          )}
                         </SelectContent>
-                      </SelectContent>
-                    </Select>
-                  );
-                }}
+                      </Select>
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
 
-              <InputErrorMessage inputName={'foundThrough'} errors={errors} />
-            </div>
+              <FormField
+                control={form.control}
+                name="document"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Documento</FormLabel>
 
-            {foundThrough === 'Recomendação' && (
-              <div className="space-y-2">
-                <Label htmlFor="personWhoIndicated">Indicado por</Label>
-                <Input
-                  placeholder="Nome do indicador"
-                  {...register('personWhoIndicated')}
-                />
-                <InputErrorMessage
-                  inputName={'personWhoIndicated'}
-                  errors={errors}
-                />
-              </div>
-            )}
+                    <FormControl>
+                      <Input
+                        placeholder="xxx.xxx.xxx-xx"
+                        {...registerWithMask('document', null, {
+                          showMaskOnHover: false,
+                          mask: Masks.document,
+                        })}
+                      />
+                    </FormControl>
 
-            <div className="space-y-2">
-              <Label htmlFor="vehicle">Veículo</Label>
-              <Input
-                placeholder="Veículo do cliente"
-                {...register('vehicle')}
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              <InputErrorMessage inputName={'vehicle'} errors={errors} />
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="registerAt">Cliente desde</Label>
-              <Input disabled value={'5 Meses'} {...register('registerAt')} />
-            </div>
-          </div>
+              <FormField
+                control={form.control}
+                name="phoneNumber"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Contato</FormLabel>
 
-          <div className="mt-5 text-end">
-            <Button variant={'sucess'}>
-              {isPending ? <LoaderCircle className="animate-spin" /> : 'Salvar'}
-            </Button>
-          </div>
-        </form>
+                    <FormControl>
+                      <Input
+                        placeholder="(xx) xxxxx-xxxx"
+                        {...registerWithMask('phoneNumber', null, {
+                          showMaskOnHover: false,
+                          mask: Masks.phoneNumber,
+                        })}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="birthDate"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Nascimento</FormLabel>
+
+                    <FormControl>
+                      <Input
+                        placeholder="xx/xx/xxxx"
+                        {...registerWithMask('birthDate', null, {
+                          showMaskOnHover: false,
+                          mask: Masks.birthDate,
+                        })}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="vehicle"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Veículo</FormLabel>
+
+                    <FormControl>
+                      <Input
+                        placeholder="Veículo do cliente"
+                        {...form.register('vehicle')}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {foundThrough ===
+                SelectObject.foundThroughEnum.Recomendacao.value.toString() && (
+                <FormField
+                  control={form.control}
+                  name="personWhoIndicated"
+                  render={() => (
+                    <FormItem>
+                      <FormLabel>Indicador</FormLabel>
+
+                      <FormControl>
+                        <Input
+                          placeholder="Nome do indicador"
+                          {...form.register('personWhoIndicated')}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+            </div>
+            <div className="mt-5 text-end">
+              <Button variant={'default'}>
+                {isPending ? (
+                  <LoaderCircle className="animate-spin" />
+                ) : (
+                  'Salvar'
+                )}
+              </Button>
+            </div>
+          </form>
+        </Form>
       </div>
-
-      {/* <div className="my-5 rounded border p-4">
-        <Typography.H3>Histórico de Manutenções</Typography.H3>
-        <Separator orientation="horizontal" className="my-3" />
-        <div>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[450px]">Serviço</TableHead>
-                <TableHead>Tempo em garagem</TableHead>
-                <TableHead>Tipo de Pagamento</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell className="font-medium">Embreagem</TableCell>
-                <TableCell>2 Meses, 4 dias</TableCell>
-                <TableCell>A vista</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Cabeçote</TableCell>
-                <TableCell>6 Meses, 4 dias</TableCell>
-                <TableCell>Parcelado 12x</TableCell>
-              </TableRow>
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TableCell colSpan={2}>Total</TableCell>
-                <TableCell className="text-right">2</TableCell>
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </div>
-      </div> */}
     </div>
   );
 }

@@ -12,7 +12,7 @@ export const newCustomerSchema = z.object({
   phoneNumber: z.string().min(1, { message: 'Campo obrigatório' }),
   vehicle: z.string().min(1, { message: 'Campo obrigatório' }),
   birthDate: z.string().min(1, { message: 'Campo obrigatório' }),
-  foundThrough: z.string().min(1, { message: 'Campo obrigatório' }),
+  foundThrough: z.string({ message: 'Campo obrigatório' }),
   personWhoIndicated: z.string().optional(),
   registerAt: z.string().optional(),
 });
@@ -20,21 +20,29 @@ export const newCustomerSchema = z.object({
 type newCustomerForm = z.infer<typeof newCustomerSchema>;
 
 export const useNewCustomers = () => {
-  const { toast } = useToast();
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  //   watch,
+  //   control,
+  // } = useForm<newCustomerForm>({
+  //   resolver: zodResolver(newCustomerSchema),
+  //   resetOptions: {
+  //     keepTouched: true,
+  //     keepIsValidating: true,
+  //   },
+  // });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    control,
-  } = useForm<newCustomerForm>({
+  const form = useForm<newCustomerForm>({
     resolver: zodResolver(newCustomerSchema),
     resetOptions: {
       keepTouched: true,
       keepIsValidating: true,
     },
   });
+
+  const { toast } = useToast();
 
   const newCustomer = async ({ ...customer }: newCustomerForm) => {
     console.log('@Call');
@@ -66,16 +74,13 @@ export const useNewCustomers = () => {
     },
   });
 
-  const onSubmit = handleSubmit(({ ...customer }) =>
+  const onSubmit = form.handleSubmit(({ ...customer }) =>
     registerNewCustomer({ ...customer }),
   );
 
   return {
-    errors,
-    register,
+    form,
     onSubmit,
-    watch,
-    control,
     isPending,
   };
 };

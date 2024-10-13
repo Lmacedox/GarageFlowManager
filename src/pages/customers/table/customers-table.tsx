@@ -18,9 +18,6 @@ import { useCustomersTable } from './use-customers-table';
 export function Customers() {
   const { isLoadingCustomersList, customersList } = useCustomersTable();
 
-  console.log('@Loading', isLoadingCustomersList);
-  console.log('@customersList', customersList);
-
   return (
     <div>
       <div className="mb-4 flex w-full justify-between">
