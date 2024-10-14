@@ -22,7 +22,7 @@ export function Customers() {
     <div>
       <div className="mb-4 flex w-full justify-between">
         <Typography.H2>Clientes</Typography.H2>
-        <Button type="button" asChild>
+        <Button type="button" data-cy="newCustomer-button" asChild>
           <NavLink to={'/new-customer'}>
             <Typography.P>Adicionar</Typography.P>
           </NavLink>

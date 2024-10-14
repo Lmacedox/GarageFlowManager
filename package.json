@@ -9,7 +9,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "cyOpen": "npx cypress open"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

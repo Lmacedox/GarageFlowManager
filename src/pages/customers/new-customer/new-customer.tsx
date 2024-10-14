@@ -36,8 +36,6 @@ export function NewCustomer() {
 
   const foundThrough = form.watch('foundThrough');
 
-  console.log(form.formState.errors);
-
   return (
     <div>
       <div className="mb-4 flex w-full justify-between">
@@ -57,7 +55,11 @@ export function NewCustomer() {
                     <FormLabel>Nome do cliente</FormLabel>
 
                     <FormControl>
-                      <Input placeholder="Nome" {...form.register('name')} />
+                      <Input
+                        placeholder="Nome"
+                        data-cy="name-input"
+                        {...form.register('name')}
+                      />
                     </FormControl>
 
                     <FormMessage />
@@ -74,13 +76,17 @@ export function NewCustomer() {
 
                     <FormControl>
                       <Select onValueChange={onChange} value={value}>
-                        <SelectTrigger className="w-full">
+                        <SelectTrigger
+                          className="w-full"
+                          data-cy={`foundThrough-input-trigger`}
+                        >
                           <SelectValue placeholder={'Selecione...'} />
                         </SelectTrigger>
                         <SelectContent>
                           {Object.values(SelectObject.foundThroughEnum).map(
                             (selectOptions) => (
                               <SelectItem
+                                data-cy={`foundThrough-input-${selectOptions.description}`}
                                 value={selectOptions.value.toString()}
                                 key={selectOptions.value}
                               >
@@ -107,6 +113,7 @@ export function NewCustomer() {
                     <FormControl>
                       <Input
                         placeholder="xxx.xxx.xxx-xx"
+                        data-cy="document-input"
                         {...registerWithMask('document', null, {
                           showMaskOnHover: false,
                           mask: Masks.document,
@@ -129,6 +136,7 @@ export function NewCustomer() {
                     <FormControl>
                       <Input
                         placeholder="(xx) xxxxx-xxxx"
+                        data-cy="phoneNumber-input"
                         {...registerWithMask('phoneNumber', null, {
                           showMaskOnHover: false,
                           mask: Masks.phoneNumber,
@@ -151,6 +159,7 @@ export function NewCustomer() {
                     <FormControl>
                       <Input
                         placeholder="xx/xx/xxxx"
+                        data-cy="birthDate-input"
                         {...registerWithMask('birthDate', null, {
                           showMaskOnHover: false,
                           mask: Masks.birthDate,
@@ -173,6 +182,7 @@ export function NewCustomer() {
                     <FormControl>
                       <Input
                         placeholder="Veículo do cliente"
+                        data-cy="vehicle-input"
                         {...form.register('vehicle')}
                       />
                     </FormControl>
@@ -205,7 +215,7 @@ export function NewCustomer() {
               )}
             </div>
             <div className="mt-5 text-end">
-              <Button variant={'default'}>
+              <Button variant={'default'} data-cy="submit-button">
                 {isPending ? (
                   <LoaderCircle className="animate-spin" />
                 ) : (
