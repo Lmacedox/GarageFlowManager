@@ -3,8 +3,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { api } from '@/lib/axios';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
+import { useParams } from 'react-router-dom';
 
 export const newCustomerSchema = z.object({
   name: z.string().min(1, { message: 'Campo obrigatório' }),
@@ -19,21 +20,23 @@ export const newCustomerSchema = z.object({
 
 type newCustomerForm = z.infer<typeof newCustomerSchema>;
 
-export const useNewCustomers = () => {
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   formState: { errors },
-  //   watch,
-  //   control,
-  // } = useForm<newCustomerForm>({
-  //   resolver: zodResolver(newCustomerSchema),
-  //   resetOptions: {
-  //     keepTouched: true,
-  //     keepIsValidating: true,
-  //   },
-  // });
+export interface ICustomerData {
+  id: string;
+  name: string;
+  document: string;
+  phoneNumber: string;
+  vehicle: string;
+  birthDate: string;
+  rg: string;
+  email: string;
+  zipCode: string;
+  address: string;
+  foundThrough: string;
+  personWhoIndicated: string;
+  registerData: string;
+}
 
+export const useNewCustomers = () => {
   const form = useForm<newCustomerForm>({
     resolver: zodResolver(newCustomerSchema),
     resetOptions: {
@@ -43,6 +46,8 @@ export const useNewCustomers = () => {
   });
 
   const { toast } = useToast();
+
+  const { customerId } = useParams();
 
   const newCustomer = async ({ ...customer }: newCustomerForm) => {
     console.log('@Call');
@@ -55,6 +60,19 @@ export const useNewCustomers = () => {
     }
 
     return { data, status };
+  };
+
+  const getCustomer = async (customerId: string) => {
+    const { data, status } = await api.get<ICustomerData>(
+      `/customers/${customerId.toString()}`,
+    );
+
+    if (status === 200) {
+      form.reset({ ...data });
+    }
+
+    console.log('@Data', data);
+    return data;
   };
 
   const { mutateAsync: registerNewCustomer, isPending } = useMutation({
@@ -74,6 +92,12 @@ export const useNewCustomers = () => {
     },
   });
 
+  const { data: customerData, isLoading: load } = useQuery({
+    queryKey: ['customer', customerId],
+    queryFn: () => getCustomer(customerId!),
+    enabled: !!customerId,
+  });
+
   const onSubmit = form.handleSubmit(({ ...customer }) =>
     registerNewCustomer({ ...customer }),
   );
@@ -82,5 +106,6 @@ export const useNewCustomers = () => {
     form,
     onSubmit,
     isPending,
+    customerData,
   };
 };

@@ -7,7 +7,7 @@ export const useCustomersTable = () => {
   };
 
   const { data: customersList, isLoading: isLoadingCustomersList } = useQuery({
-    queryKey: ['profile'],
+    queryKey: ['customersList'],
     queryFn: loadCustomersList,
   });
 
