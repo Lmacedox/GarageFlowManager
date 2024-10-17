@@ -30,7 +30,7 @@ import { Masks } from '@/resources/masks';
 import { SelectObject } from '@/resources/selectObject';
 
 export function NewCustomer() {
-  const { form, onSubmit, isPending } = useNewCustomers();
+  const { form, onSubmit, isPending, customerData } = useNewCustomers();
 
   const registerWithMask = useHookFormMask(form.register);
 
@@ -39,7 +39,9 @@ export function NewCustomer() {
   return (
     <div>
       <div className="mb-4 flex w-full justify-between">
-        <Typography.H2>Cliente - Cristiano Ronaldo</Typography.H2>
+        <Typography.H2>
+          Cliente - {customerData?.name ?? 'Novo cliente'}
+        </Typography.H2>
       </div>
       <div className="rounded border p-4">
         <Typography.H3>Dados</Typography.H3>

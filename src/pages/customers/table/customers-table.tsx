@@ -44,7 +44,7 @@ export function Customers() {
           <TableBody>
             {customersList?.data.map((e: any) => {
               return (
-                <TableRow>
+                <TableRow key={e.id}>
                   <TableCell className="font-medium">{e.name}</TableCell>
                   <TableCell>{e.vehicle}</TableCell>
                   <TableCell>{e.phoneNumber}</TableCell>
@@ -52,8 +52,16 @@ export function Customers() {
                   <TableCell>{e.registerData}</TableCell>
                   <TableCell className="text-right">2 anos e 4 Meses</TableCell>
                   <TableCell className="text-center">
-                    <Button variant="outline" size="icon">
-                      <SquarePen className="h-4 w-4" />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      data-cy="editCustomer-button"
+                      asChild
+                    >
+                      <NavLink to={`/new-customer/${e.id}`}>
+                        <SquarePen className="h-4 w-4" />
+                      </NavLink>
                     </Button>
                   </TableCell>
                 </TableRow>
