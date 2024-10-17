@@ -14,6 +14,8 @@ import {
 
 import { SquarePen } from 'lucide-react';
 import { useCustomersTable } from './use-customers-table';
+import { CustomersTableSkeleton } from './customer-table.skeleton';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export function Customers() {
   const { isLoadingCustomersList, customersList } = useCustomersTable();
@@ -42,29 +44,39 @@ export function Customers() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {customersList?.data.map((e: any) => {
-              return (
-                <TableRow>
-                  <TableCell className="font-medium">{e.name}</TableCell>
-                  <TableCell>{e.vehicle}</TableCell>
-                  <TableCell>{e.phoneNumber}</TableCell>
-                  <TableCell>4</TableCell>
-                  <TableCell>{e.registerData}</TableCell>
-                  <TableCell className="text-right">2 anos e 4 Meses</TableCell>
-                  <TableCell className="text-center">
-                    <Button variant="outline" size="icon">
-                      <SquarePen className="h-4 w-4" />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+            {isLoadingCustomersList ? (
+              <CustomersTableSkeleton />
+            ) : (
+              customersList?.data.map((e: any) => {
+                return (
+                  <TableRow>
+                    <TableCell className="font-medium">{e.name}</TableCell>
+                    <TableCell>{e.vehicle}</TableCell>
+                    <TableCell>{e.phoneNumber}</TableCell>
+                    <TableCell>4</TableCell>
+                    <TableCell>{e.registerData}</TableCell>
+                    <TableCell className="text-right">
+                      2 anos e 4 Meses
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <Button variant="outline" size="icon">
+                        <SquarePen className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            )}
           </TableBody>
           <TableFooter>
             <TableRow>
               <TableCell colSpan={6}>Total</TableCell>
-              <TableCell className="text-right">
-                {customersList?.data.length}
+              <TableCell className="flex justify-center text-right">
+                {isLoadingCustomersList ? (
+                  <Skeleton className="h-[20px] w-[50px] rounded-md" />
+                ) : (
+                  customersList?.data.length
+                )}
               </TableCell>
             </TableRow>
           </TableFooter>
