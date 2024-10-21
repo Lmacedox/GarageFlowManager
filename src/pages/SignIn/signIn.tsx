@@ -28,7 +28,7 @@ export function SignIn() {
 
         <div className="space-y-5 text-left">
           <Input
-            placeholder="*********"
+            placeholder="Senha"
             type="password"
             {...register('password')}
             data-cy="password-input"
