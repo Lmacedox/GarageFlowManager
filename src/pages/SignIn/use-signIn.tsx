@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 
 import { useToast } from '@/hooks/use-toast';
 import { api } from '@/lib/axios';
@@ -14,13 +15,15 @@ export const signInSchema = z.object({
 
 type signInForm = z.infer<typeof signInSchema>;
 
-export const useSignIn = () => {
+export function useSignIn() {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [hasError, sethasError] = useState(false);
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<signInForm>({
     resolver: zodResolver(signInSchema),
@@ -30,7 +33,7 @@ export const useSignIn = () => {
     },
   });
 
-  const loadCustomersList = async ({ ...user }: signInForm) => {
+  const SignIn = async ({ ...user }: signInForm) => {
     const { data, status } = await api.get('/users', {
       params: {
         ...user,
@@ -38,34 +41,42 @@ export const useSignIn = () => {
     });
 
     if (data.length === 0) {
-      throw { status: 401 };
+      sethasError(true);
+      const obj = {
+        status: 401,
+      };
+      return obj;
     }
 
     return { data, status };
   };
 
-  const { mutateAsync: registerRestaurantFn, isPending } = useMutation({
-    mutationFn: loadCustomersList,
-    onSuccess: () => {
-      navigate('/dashboard');
-    },
-    onError: () => {
-      toast({
-        title: 'Parece que temos algo errado.....',
-        description: 'Usuário inválido!',
-        variant: 'destructive',
-      });
+  const { mutateAsync: SignInFn, isPending } = useMutation({
+    mutationFn: SignIn,
+    onSuccess: ({ status }) => {
+      if (status === 401) {
+        toast({
+          title: 'Parece que temos algo errado.....',
+          description: 'Credenciais inválidas',
+          variant: 'destructive',
+          duration: 10000,
+        });
+      } else {
+        navigate('/dashboard');
+      }
     },
   });
 
-  const onSubmit = handleSubmit(({ userName, password }) =>
-    registerRestaurantFn({ userName, password }),
-  );
+  const onSubmit = handleSubmit(async ({ userName, password }) => {
+    await SignInFn({ userName, password });
+  });
 
   return {
     errors,
     register,
     onSubmit,
     isPending,
+    hasError,
+    watch,
   };
-};
+}
